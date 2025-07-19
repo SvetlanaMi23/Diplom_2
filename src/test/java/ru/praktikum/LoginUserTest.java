@@ -7,6 +7,8 @@ import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+
+@DisplayName("Логин пользователя")
 public class LoginUserTest extends BaseUserTest {
 
     @Test

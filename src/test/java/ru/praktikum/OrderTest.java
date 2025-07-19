@@ -10,6 +10,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
+@DisplayName("Создание заказа")
 public class OrderTest extends BaseUserTest {
 
     private final Order orderSteps = new Order();

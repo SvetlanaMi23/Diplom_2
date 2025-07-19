@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.*;
 
+@DisplayName("Создание пользователя")
 public class RegisterUserTest extends BaseUserTest {
     private String generateRandomEmail() {
         return "user_" + RandomStringUtils.randomAlphabetic(8) + "@example.com";

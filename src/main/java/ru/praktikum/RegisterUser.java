@@ -1,5 +1,7 @@
 package ru.praktikum;
 
+import java.util.Objects;
+
 public class RegisterUser {
     private String email;
     private String password;
@@ -38,5 +40,27 @@ public class RegisterUser {
     public RegisterUser setName(String name) {
         this.name = name;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RegisterUser that = (RegisterUser) o;
+        return Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, password, name);
+    }
+
+    @Override
+    public String toString() {
+        return "RegisterUser{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
