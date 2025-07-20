@@ -1,10 +1,10 @@
-package ru.praktikum;
+package ru.praktikum.step;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
+import ru.praktikum.model.RegisterUser;
 
-import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class UserSteps {
@@ -20,21 +20,25 @@ public class UserSteps {
                 .when()
                 .post(CREATE_USER)
                 .then();
-
     }
 
     @Step("Логин пользователя и получение accessToken: {user}")
     public String loginAndGetToken(RegisterUser user) {
-        ValidatableResponse response = given()
-                .body(Map.of("email", user.getEmail(), "password", user.getPassword()))
-                .when()
-                .post(LOGIN_USER)
-                .then()
+        ValidatableResponse response = login(user)
                 .statusCode(HttpStatus.SC_OK);
 
         // Извлекаем accessToken из тела ответа
         String token = response.extract().path("accessToken");
         return token; // должен уже содержать "Bearer "
+    }
+
+    @Step("Логин пользователя: {user}")
+    public ValidatableResponse login(RegisterUser user) {
+        return given()
+                .body(new RegisterUser().setEmail(user.getEmail()).setPassword(user.getPassword()))
+                .when()
+                .post(LOGIN_USER)
+                .then();
     }
 
     @Step("Удаление пользователя по accessToken")

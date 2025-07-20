@@ -6,6 +6,7 @@ import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
+import ru.praktikum.model.RegisterUser;
 
 import static org.hamcrest.Matchers.*;
 
@@ -18,7 +19,7 @@ public class RegisterUserTest extends BaseUserTest {
     @Test
     @DisplayName("Успешная регистрация нового пользователя")
     @Description("Проверяет, что пользователь успешно создан при корректных данных")
-    public void userCanBeRegisteredSuccessfully() {
+    public void userCanBeRegisteredSuccessfullyTest() {
         user = new RegisterUser()
                 .setEmail(generateRandomEmail())
                 .setPassword("password123")
@@ -34,7 +35,7 @@ public class RegisterUserTest extends BaseUserTest {
     @Test
     @DisplayName("Попытка создать уже существующего пользователя")
     @Description("Проверяет, что при создании уже существующего пользователя приходит ошибка 403 Forbidden")
-    public void userCannotBeRegisteredTwice() {
+    public void userCannotBeRegisteredTwiceTest() {
         user = new RegisterUser()
                 .setEmail(generateRandomEmail())
                 .setPassword("password123")
@@ -55,7 +56,7 @@ public class RegisterUserTest extends BaseUserTest {
     @Test
     @DisplayName("Нельзя зарегистрировать пользователя без email")
     @Description("Проверяет, что при регистрации пользователя без указания email возвращается ошибка 403 Forbidden")
-    public void userCannotBeRegisteredWithoutEmail() {
+    public void userCannotBeRegisteredWithoutEmailTest() {
         user = new RegisterUser()
                 .setPassword("password123")
                 .setName("John");
@@ -69,7 +70,7 @@ public class RegisterUserTest extends BaseUserTest {
     @Test
     @DisplayName("Нельзя зарегистрировать пользователя без пароля")
     @Description("Проверяет, что при регистрации пользователя без указания пароля возвращается ошибка 403 Forbidden")
-    public void userCannotBeRegisteredWithoutPassword() {
+    public void userCannotBeRegisteredWithoutPasswordTest() {
         user = new RegisterUser()
                 .setEmail(generateRandomEmail())
                 .setName("John");
@@ -84,7 +85,7 @@ public class RegisterUserTest extends BaseUserTest {
     @Test
     @DisplayName("Нельзя зарегистрировать пользователя без имени")
     @Description("Проверяет, что при регистрации пользователя без указания имени возвращается ошибка 403 Forbidden")
-    public void userCannotBeRegisteredWithoutName() {
+    public void userCannotBeRegisteredWithoutNameTest() {
         user = new RegisterUser()
                 .setEmail(generateRandomEmail())
                 .setPassword("password123");

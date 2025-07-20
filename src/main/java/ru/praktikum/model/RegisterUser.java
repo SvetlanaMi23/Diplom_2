@@ -1,4 +1,4 @@
-package ru.praktikum;
+package ru.praktikum.model;
 
 import java.util.Objects;
 

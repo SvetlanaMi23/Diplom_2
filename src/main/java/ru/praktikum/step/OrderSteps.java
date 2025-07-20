@@ -1,23 +1,25 @@
-package ru.praktikum;
+package ru.praktikum.step;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
+import ru.praktikum.model.Order;
 
 import java.util.List;
-import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-public class Order {
+public class OrderSteps {
     private static final String ORDERS = "/api/orders";
     private static final String INGREDIENTS = "/api/ingredients";
 
     @Step("Создание заказа с токеном и ингредиентами")
     public ValidatableResponse createOrderWithToken(String token, List<String> ingredients) {
+        Order order = new Order(ingredients);
+
         return given()
                 .header("Authorization", token)
-                .body(Map.of("ingredients", ingredients))
+                .body(order)
                 .when()
                 .post(ORDERS)
                 .then();
@@ -25,8 +27,10 @@ public class Order {
 
     @Step("Создание заказа без авторизации")
     public ValidatableResponse createOrderWithoutToken(List<String> ingredients) {
+        Order order = new Order(ingredients);
+
         return given()
-                .body(Map.of("ingredients", ingredients))
+                .body(order)
                 .when()
                 .post(ORDERS)
                 .then();

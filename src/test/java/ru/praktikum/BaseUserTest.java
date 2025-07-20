@@ -6,6 +6,9 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
+import ru.praktikum.model.RegisterUser;
+import ru.praktikum.step.UserSteps;
+
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 
