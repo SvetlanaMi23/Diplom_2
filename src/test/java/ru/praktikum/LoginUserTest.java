@@ -2,6 +2,7 @@ package ru.praktikum;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -19,7 +20,7 @@ public class LoginUserTest extends BaseUserTest {
                 .setEmail("user" + System.currentTimeMillis() + "@example.com")
                 .setPassword("password123")
                 .setName("John");
-        userSteps.createUser(user).statusCode(200);
+        userSteps.createUser(user).statusCode(HttpStatus.SC_OK);
 
         // Пытаемся залогиниться
         ValidatableResponse response = given()
@@ -27,7 +28,7 @@ public class LoginUserTest extends BaseUserTest {
                 .when()
                 .post("/api/auth/login")
                 .then()
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("success", is(true))
                 .body("accessToken", notNullValue())
                 .body("refreshToken", notNullValue());
@@ -46,7 +47,7 @@ public class LoginUserTest extends BaseUserTest {
                 .when()
                 .post("/api/auth/login")
                 .then()
-                .statusCode(401)
+                .statusCode(HttpStatus.SC_UNAUTHORIZED)
                 .body("success", is(false))
                 .body("message", containsString("email or password are incorrect"));
     }

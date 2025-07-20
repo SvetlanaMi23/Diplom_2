@@ -2,6 +2,8 @@ package ru.praktikum;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
+import org.apache.http.HttpStatus;
+
 import java.util.Map;
 import static io.restassured.RestAssured.given;
 
@@ -28,7 +30,7 @@ public class UserSteps {
                 .when()
                 .post(LOGIN_USER)
                 .then()
-                .statusCode(200);
+                .statusCode(HttpStatus.SC_OK);
 
         // Извлекаем accessToken из тела ответа
         String token = response.extract().path("accessToken");

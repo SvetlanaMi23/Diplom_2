@@ -2,6 +2,7 @@ package ru.praktikum;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
+import org.apache.http.HttpStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class Order {
     @Step("Получение id первого ингредиента из списка")
     public String getFirstIngredientId() {
         return getIngredients()
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .path("data[0]._id");
     }

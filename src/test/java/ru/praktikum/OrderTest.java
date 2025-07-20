@@ -2,6 +2,7 @@ package ru.praktikum;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ public class OrderTest extends BaseUserTest {
                 .setPassword("123456")
                 .setName("TestUser");
 
-        userSteps.createUser(user).statusCode(200); //регистрация нового пользователя
+        userSteps.createUser(user).statusCode(HttpStatus.SC_OK); //регистрация нового пользователя
         this.accessToken = userSteps.loginAndGetToken(user); //выполняется логин и сохраняется accessToken
         validIngredientId = orderSteps.getFirstIngredientId(); //id первого ингредиента
     }
@@ -34,7 +35,7 @@ public class OrderTest extends BaseUserTest {
     @Description("Авторизованный пользователь может создать заказ с правильными ингредиентами")
     public void createOrderWithAuthAndValidIngredients() {
         orderSteps.createOrderWithToken(accessToken, List.of(validIngredientId))
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("success", is(true))
                 .body("order.number", notNullValue())
                 .body("name", notNullValue());
@@ -45,7 +46,7 @@ public class OrderTest extends BaseUserTest {
     @Description("Гость может создать заказ без авторизации")
     public void createOrderWithoutAuth() {
         orderSteps.createOrderWithoutToken(List.of(validIngredientId))
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("success", is(true))
                 .body("order.number", notNullValue())
                 .body("name", notNullValue());
@@ -56,7 +57,7 @@ public class OrderTest extends BaseUserTest {
     @Description("Создание заказа без ингредиентов должно вернуть ошибку 400")
     public void createOrderWithoutIngredients() {
         orderSteps.createOrderWithToken(accessToken, Collections.emptyList())
-                .statusCode(400)
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", is(false))
                 .body("message", equalTo("Ingredient ids must be provided"));
     }
@@ -66,7 +67,7 @@ public class OrderTest extends BaseUserTest {
     @Description("Передача несуществующего id ингредиента возвращает 500")
     public void createOrderWithInvalidIngredient() {
         orderSteps.createOrderWithToken(accessToken, List.of("invalid_ingredient_id"))
-                .statusCode(500); // Internal Server Error
+                .statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR); // Internal Server Error
     }
 }
 

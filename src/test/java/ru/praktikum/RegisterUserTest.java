@@ -4,6 +4,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.*;
@@ -24,7 +25,7 @@ public class RegisterUserTest extends BaseUserTest {
                 .setName("John");
         ValidatableResponse response = userSteps.createUser(user);
         response
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("success", is(true))
                 .body("accessToken", notNullValue())
                 .body("refreshToken", notNullValue());
@@ -41,13 +42,13 @@ public class RegisterUserTest extends BaseUserTest {
 
         // Первая регистрация
         userSteps.createUser(user)
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("success", is(true));
 
         // Повторная регистрация — ошибка
         ValidatableResponse response = userSteps.createUser(user);
         response
-                .statusCode(403)
+                .statusCode(HttpStatus.SC_FORBIDDEN)
                 .body("message", equalTo("User already exists"));
     }
 
@@ -60,7 +61,7 @@ public class RegisterUserTest extends BaseUserTest {
                 .setName("John");
         ValidatableResponse response = userSteps.createUser(user);
         response
-                .statusCode(403)
+                .statusCode(HttpStatus.SC_FORBIDDEN)
                 .body("message", equalTo("Email, password and name are required fields"));
         user = null; // Не удаляем, потому что не был зарегистрирован
     }
@@ -75,7 +76,7 @@ public class RegisterUserTest extends BaseUserTest {
 
         ValidatableResponse response = userSteps.createUser(user);
         response
-                .statusCode(403)
+                .statusCode(HttpStatus.SC_FORBIDDEN)
                 .body("message", equalTo("Email, password and name are required fields"));
         user = null; // Не удаляем, потому что не был зарегистрирован
     }
@@ -90,7 +91,7 @@ public class RegisterUserTest extends BaseUserTest {
 
         ValidatableResponse response = userSteps.createUser(user);
         response
-                .statusCode(403)
+                .statusCode(HttpStatus.SC_FORBIDDEN)
                 .body("message", equalTo("Email, password and name are required fields"));
         user = null; // Не удаляем, потому что не был зарегистрирован
     }

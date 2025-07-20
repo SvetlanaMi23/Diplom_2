@@ -3,6 +3,7 @@ package ru.praktikum;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
+import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
 import static org.hamcrest.Matchers.anyOf;
@@ -24,14 +25,14 @@ public class BaseUserTest extends BaseTest {
         if (accessToken != null && !accessToken.isEmpty()) {
             // Если токен уже есть — сразу удалить
             userSteps.deleteUser(accessToken)
-                    .statusCode(anyOf(is(200), is(202), is(204)));
+                    .statusCode(anyOf(is(HttpStatus.SC_OK), is(HttpStatus.SC_ACCEPTED), is(HttpStatus.SC_NO_CONTENT)));
         } else if (user != null) {
             // Если токена нет, попробовать получить и удалить
             try {
                 String token = userSteps.loginAndGetToken(user);
                 if (token != null && token.startsWith("Bearer")) {
                     userSteps.deleteUser(token)
-                            .statusCode(anyOf(is(200), is(202), is(204)));
+                            .statusCode(anyOf(is(HttpStatus.SC_OK), is(HttpStatus.SC_ACCEPTED), is(HttpStatus.SC_NO_CONTENT)));
                 }
             } catch (Exception e) {
                 System.out.println("Не удалось удалить пользователя: " + e.getMessage());
